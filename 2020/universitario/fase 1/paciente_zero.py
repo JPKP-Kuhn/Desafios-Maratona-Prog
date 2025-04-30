@@ -1,27 +1,24 @@
 # Determinar quem foi o primeiro paciente da infecção
 tot_infect, tot_cadeias = map(int, input().split())
+fonte = []
+infect = []
 
-cadeias = []
 for i in range(tot_cadeias):
-    cadeias.append(list(map(int, input().split())))
-# Remove o segundo índice de cada cadeia
-for i in cadeias:
-    i.pop(1)
+    cadeias = input().split()
+    cadeias.pop(1)
+    if cadeias[0] not in fonte:
+        fonte.append(cadeias[0])
+    cadeias.pop(0)
+    infect.extend(cadeias)
 
-fonte = [] # A fonte de cada cadeia
-for j in range(len(cadeias)):
-    fonte.append(cadeias[j][0])
-
-# Remove a fonte da cadeia
-for i in cadeias:
-    i.pop(0)
-
-# Porcurar se alguma das fontes na está na cadeia de outra fonte
+resposta = []
 for i in fonte:
-    for j in range(len(cadeias)):
-        if i in cadeias[j]:
-            fonte.remove(i)
+    if not i in infect:
+        resposta.append(i)
 
-fonte.sort()
-for i in fonte:
+resposta = [int(k) for k in resposta]
+resposta.sort()
+for i in resposta:
     print(i)
+
+
