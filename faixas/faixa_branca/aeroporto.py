@@ -25,10 +25,11 @@ while tot_aero != 0 and tot_voos != 0:
             aeroporto.append(f"{i} ")
 
     aeroporto[-1] = aeroporto[-1].strip()
+    print(aeroporto)
     print(f"Teste {teste}")
     for i in aeroporto:
         print(i, end='')
     print()
-    
+    print()
     tot_aero, tot_voos = map(int, linhas[linha_atual].split())
     linha_atual += 1
