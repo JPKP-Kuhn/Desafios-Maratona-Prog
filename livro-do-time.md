@@ -97,6 +97,68 @@ while entrada > 0:
 
 ```
 
+## Matrizes
+Uma lista de listas
+
+[Sudoku](https://judge.beecrowd.com/pt/problems/view/1383)
+```
+import sys
+
+e = sys.stdin.read().splitlines()
+n = int(e[0])
+del e[0]
+test = 0
+
+# Verifica a matriz de Sudoku
+def ver_sudoku(sudoku):
+    # Verifica cada linha
+    for i in range(len(sudoku)):
+        for j in range(1, 10):
+            v = sudoku[i].count(j)
+            if v > 1:
+                return "NAO"
+
+    # Verifica cada coluna
+    for i in range(len(sudoku)):
+        coluna = []  # Reinicia a lista para cada coluna
+        for j in range(len(sudoku)):
+            coluna.append(sudoku[j][i])  # Adiciona o elemento da coluna atual
+
+        for k in range(1, 10):
+            c = coluna.count(k)
+            if c > 1:
+                return "NAO"
+
+    # Verifica cada quadrante 3x3
+    for i in range(3):
+        for j in range(3):
+            quadrante = []
+            for k in range(3):
+                for l in range(3):
+                    quadrante.append(sudoku[i * 3 + k][j * 3 + l])  # Adiciona o elemento do quadrante atual
+            for m in range(1, 10):
+                q = quadrante.count(m)
+                if q > 1:
+                    return "NAO"
+
+    return "SIM"
+
+while n != 0:
+    test += 1
+    n -= 1
+    sudoku = []
+
+    # Lê a matriz de Sudoku
+    for i in range(9):
+        sudoku.append(list(map(int, e[0].split())))
+        del e[0]
+
+    result = ver_sudoku(sudoku)
+    print("Instancia", test)
+    print(result)
+    print()
+```
+
 ## Grafos
 Uma lista que representa a conectividade entre nós.
 ### [BFS](https://cp-algorithms.com/graph/breadth-first-search.html) (Breadth-first search) 
@@ -141,6 +203,56 @@ if (!used[u]) {
         cout << v << " ";
 }
 ```
+
+#### Um exemplo da implementação do BFS
+Problema OBI [Fissura](https://olimpiada.ic.unicamp.br/pratique/ps/2020/f1/fissura/)
+```
+# Verificar a erupção de um vulcão
+import sys
+
+e = sys.stdin.read().splitlines()
+
+n, f = map(int, e[0].split())
+del e[0]
+
+# Matriz do terreno
+mat = [None] * n
+for i in range(n):
+    mat[i] = list(map(int, e[i]))
+
+# Lista de teste para controlar a propagação da lava
+lista = []
+if mat[0][0] <= f:
+    mat[0][0] = '*'
+    lista.append((0,0))
+
+# Para verificar as direções: para cima (-1, 0), para direita (0, 1), baixo (1, 0) e esquerda (0, -1)
+dy = [-1, 0, 1, 0] # São vetores de direção
+dx = [0, 1, 0, -1]
+
+# Algoritimo de busca em largura (BFS) para simular a propagação de lava
+while lista != []:
+    u = lista.pop(0) # retira o primeiro elemento, FIFO
+    i, j = u[0], u[1] # coordenadas atuais
+
+    # Verifica as 4 direções adjacentes
+    for d in range(4):
+        iv = i + dy[d] # Nova coordenada y
+        jv = j + dx[d] # Nova coordenada x
+
+        # Verifica se a nova posição está dentro dos limites da matriz
+        if iv >= 0 and iv <= n-1 and jv >= 0 and jv <= n-1:
+            if mat[iv][jv] != '*' and mat[iv][jv] <= f:
+                mat[iv][jv] = '*'
+                lista.append((iv, jv)) # Adiciona a nova posição a lista de propagação
+
+
+def converte_saida(matriz):
+    return '\n'.join(''.join(map(str, linha)) for linha in matriz)
+print(converte_saida(mat))
+
+```
+
 ### [DFS](https://cp-algorithms.com/graph/depth-first-search.html) (Depth First Search)
 Algoritmo de busca profunda, primeiro vai até a última conexão de um grafo
 ```
@@ -178,6 +290,61 @@ void dfs(int v) {
     color[v] = 2;
     time_out[v] = dfs_timer++;
 }
+```
+
+#### Aplicação de DFS
+Problema [Counting Rooms](https://cses.fi/problemset/task/1192)
+```
+#include <bits/stdc++.h>
+using namespace std;
+
+// DFS function to mark all connected floor cells as visited
+void dfs(vector<string>& mat, int i, int j, int n, int m) {
+    // Check if current position is valid and is a floor
+    if (i < 0 || i >= n || j < 0 || j >= m || mat[i][j] == '#') {
+        return;
+    }
+    
+    mat[i][j] = '#';
+    
+    int dx[] = {0, 0, 1, -1};
+    int dy[] = {1, -1, 0, 0};
+    
+    // Explore all four directions
+    for (int d = 0; d < 4; d++) {
+        int nx = i + dx[d];
+        int ny = j + dy[d];
+        dfs(mat, nx, ny, n, m);
+    }
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    
+    vector<string> mat(n);
+    for (int i = 0; i < n; i++) {
+        cin >> mat[i];
+    }
+    
+    int rooms = 0;
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (mat[i][j] == '.') {
+                rooms++;
+                
+                // Use DFS to mark all connected floor tiles as visited
+                dfs(mat, i, j, n, m);
+            }
+        }
+    }
+    
+    cout << rooms << endl;
+    
+    return 0;
+}
+
 ```
 
 ## Referências -
