@@ -404,3 +404,4 @@ int main() {
 - [Competitive Programing 3, by Halim](https://files.gitter.im/SamZhangQingChuan/sam/DA1g/Steven-Halim_-Felix-Halim-Competitive-Programming-3_-The-New-Lower-Bound-of-Programming-Contests-Lulu.com-_2013_.pdf)
 - [Competitive Programmer’s Handbook](https://cses.fi/book/book.pdf)
 - [Algorithms for Competitive Programming](https://cp-algorithms.com/index.html)
+- [USACO](https://usaco.guide/)
