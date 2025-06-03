@@ -1,52 +1,57 @@
 #include <bits/stdc++.h>
+#include <ios>
+#include <vector>
 using namespace std;
 using ll = long long;
 using vll = vector<ll>;
 
+const ll MAXN = pow(10, 5) + 10;
+
 int main() {
-  ll tests;
-  cin >> tests;
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
 
-  while (tests--) {
-    ll families, rows;
-    cin >> families >> rows;
+  int t{};
+  cin >> t;
+  while (t--) {
+    ll nFamily, rows;
+    cin >> nFamily >> rows;
 
-    ll seats = 2 * rows;
-    vll mem_families;
+    ll seats = 2*rows;
+    ll totPeople{};
+    ll happy{};
 
-    ll x, people = 0;
-    for (ll i = 0; i < families; i++) {
-      cin >> x;
-      people += x;
-      mem_families.push_back(x);
+    vll nPFamily(nFamily);
+    for (ll i=0;i<nFamily;i++) {
+      cin >> nPFamily[i];
+      totPeople += nPFamily[i];
     }
+    ll qtdTotal = totPeople;
 
-    ll happy = 0;
-    ll used_rows = 0;
-
-    // Formar todos os pares possíveis
-    for (ll i = 0; i < families; i++) {
-      ll pair = mem_families[i] / 2;
-      pair = min(pair, rows - used_rows);
-
-      happy += pair * 2;
-      used_rows += pair;
-      mem_families[i] -= pair * 2;
+    // Agora alocar cada pessoa nos assentos para ficarem felizes
+    while(seats >= 2) {
+      bool maisDeDois = false;
+      for (ll i=0;i<nFamily;i++) {
+        if (nPFamily[i]>1) {
+          nPFamily[i]-=2;
+          happy+=2;
+          seats-=2; rows--;
+          totPeople-=2;
+          maisDeDois = true;
+        }
+      }
+      if (!maisDeDois) break;
     }
-
-    // Restantes individuais
-    ll remaining_people = 0;
-    for (ll i = 0; i < families; i++) {
-      remaining_people += mem_families[i];
+    // Coube todos no ònibus
+    // entrada: 3 3 e 2 2 2, assim todos já ocuparam; se for 4 5 e 1 1 2 2, são 10 assentos e sobrar 2 pessoas ainda, sendo 4 já ocupados, tem sobra
+    if (totPeople <= seats/2) {
+      cout << qtdTotal << '\n';
+    } else { 
+      happy += seats - totPeople;
+      cout << happy << '\n';
     }
-
-    ll rem_rows = rows - used_rows;
-
-    // Corrigido aqui: só 1 pessoa feliz por fileira vazia
-    happy += min(remaining_people, rem_rows);
-
-    cout << happy << endl;
   }
+
   return 0;
 }
 
