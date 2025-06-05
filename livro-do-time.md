@@ -485,6 +485,65 @@ int main() {
   return 0;
 }
 ```
+## Ad hoc
+São problemas que não envolvem nenhuma técnica de programação específica, nem um estrutura de dados, mas sim, raciocínio lógico e uma elaboração direta do algoritmo. Eles envolvem também ordenação dos objetos para posterior manipulação
+
+### Ordenação de uma struct com sort
+[Quem vai ser Reprovado](https://judge.beecrowd.com/pt/problems/view/2134)
+Basicamente ordenar os alunos em ordem crescente pelo número de questões corretas e, caso seja o mesmo número, então entre eles vale uma ordem lexicográfica, como a ordem alfabética por exemplo.
+```c++
+#include <bits/stdc++.h>
+#include <ios>
+#include <vector>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+using namespace std;
+using ll = long long;
+using vll = vector<ll>;
+
+typedef struct aluno {
+  string nome;
+  int problemas;
+
+} Aluno;
+
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  int n;
+  int instacia {1};
+
+  while (cin >> n) {
+
+    vector<Aluno> alunos(n);
+
+    for (int i=0; i<n; i++) {
+      cin >> alunos[i].nome >> alunos[i].problemas;
+    }
+
+    // Ordenação em ordem crscente
+    sort(alunos.begin(), alunos.end(), [](const Aluno& a, const Aluno& b) {
+      if (a.problemas == b.problemas) {  // Se os alunos resolveram o mesmo número de problemas
+        return a.nome > b.nome;          // Faz a comparação lexicográfica, ou seja, pela ordem alfabética
+        // será true se a.nome vem depois de b.nome no alfabeto, e assim o a.nome deve vir antes de b.nome
+        // Por exemplo, a.nome = "João"; b.nome = "Ana", retornará true. Então a ordem fica Z-A
+      }
+      return a.problemas < b.problemas; // Assim organiza em ordem alfabética de A-Z
+    });
+
+    cout << "Instancia " << instacia << '\n';
+    instacia++;
+    cout << alunos[0].nome << '\n';
+    cout << '\n';
+  }
+
+  return 0;
+}
+```
 
 ## Árvores
 Estrutura que possui uma organização hierárquica entre seus elementos
