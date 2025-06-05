@@ -345,8 +345,198 @@ int main() {
 }
 ```
 
+## Fila, queue
+Operam como uma FIFO (First-in First-out)
+```python
+from collections import deque
+
+queue = deque()
+queue.append('a')
+print(queue.popleft()) #Output 'a'
+```
+
+[Throwing cards away I](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1876)
+Dado um número, terá um deck de cartas de 1 (Primeira no topo) até este número (Última carta do deck), descarte a carta do topo e mova a nova que agora está no topo para o final do deck.
+```c++
+#include <bits/stdc++.h>
+#include <cstdio>
+#include <queue>
+using namespace std;
+using ll = long long;
+
+int n;
+int main() {
+  for (;;) {
+    scanf("%d", &n);
+    if (n == 0) {break;}
+
+    queue<int> cards;
+    for (int i = 1; i <= n; i++) {
+      cards.push(i);
+    }
+
+    queue<int> discarded;
+    int c, d;
+    while(cards.size() > 1) {
+      c = cards.front();
+      cards.pop();
+      discarded.push(c);
+      d = cards.front();
+      cards.pop();
+      cards.push(d);
+    }
+
+    printf("Discarded cards:");
+    int s = discarded.size();
+    for (int i = 0; i < s-1; i++){
+        printf(" %d,", discarded.front());
+        discarded.pop();
+    }
+    printf(" %d\n", discarded.front());
+    printf("Remaining card: %d\n", cards.front());
+  }
+  return 0;
+}
+```
+### Priority_queue
+Semelhante a uma fila, mas seu primeiro elemento sempre é o maior que ela contém.
+[Add All](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1895)
+Calcular o custo mínimo para somar todos os números de uma sequência. Exemplo 1 2 3, terá saída 9, pois 1 + 2 = 3 e 3 + 3 = 6, o custo será o calor das operações, 3 + 6
+```c++
+#include <bits/stdc++.h>
+#include <queue>
+#include <vector>
+using namespace std;
+using ll = long long;
+using vll = vector<ll>;
+
+ll n;
+int main() {
+  while (cin >> n && n != 0) {
+    priority_queue<ll, vector<ll>, greater<ll>> somas;
+    ll x;
+    for (ll i = 0; i<n;i++) {
+      cin >> x;
+      somas.push(x);
+    }
+
+    ll tot_cost = 0;
+    while (somas.size() > 1) {
+      ll a = somas.top(); somas.pop();
+      ll b = somas.top(); somas.pop();
+      ll cost = a + b;
+      tot_cost += cost;
+      somas.push(cost);
+    }
+    cout << tot_cost << endl;
+  }
+  return 0;
+}
+```
+
+## Pilha, stack
+Operam como uma LIFO (Last-in, First-out)
+[Rails](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=455)
+Basicamente, recebe uma pilha de números e tem que saber se ela pode realmente ser uma pilha com números crescentes ou descrescentes. Yes se for 1 2 3 4 5 ou 5 4 3 2 1, mas No se for 5 4 1 2 3
+```c++
+#include <bits/stdc++.h>
+#include <stack>
+using namespace std;
+using ll = long long;
+
+int main() {
+  ll n;
+
+  while(cin >> n && n != 0) {
+    while (true) {
+      vector<ll> alvo(n);
+      bool possivel = true;
+
+      cin >> alvo[0];
+      if (alvo[0] == 0) break; // fim do bloco
+      for (ll i =1;i < n; i++){
+        cin >> alvo[i];
+      }
+
+      stack<ll> estacao;
+      ll atual = 1; // Próximo vagão de A
+
+      for (ll i =0; i < n; i++) {
+        ll desejado = alvo[i];
+
+        // Empilha até o desejado apracerer no topo
+        while (atual <= n && (estacao.empty() || estacao.top() != desejado)) {
+          estacao.push(atual);
+          atual++;
+        }
+
+        if (estacao.top() == desejado && !estacao.empty()) {
+          estacao.pop();
+        } else {
+          possivel = false;
+          break;
+        }
+      }
+      // Acabou o bloco
+      cout << (possivel ? "Yes" : "No") << endl;
+    }
+    cout << endl;
+  }
+  return 0;
+}
+```
+
 ## Árvores
 Estrutura que possui uma organização hierárquica entre seus elementos
+
+### [Subordinates](https://cses.fi/problemset/task/1674)
+Dada a estrutura de uma empresa, calcule para cada empregado, os seus subordinados
+```c++
+#include <bits/stdc++.h>
+#include <vector>
+using namespace std;
+using ll = long long;
+
+const ll maxn = 200010;
+ll n;
+vector<ll> employers[maxn];
+vector<ll> ns (maxn, 0); // Número de subordinados
+vector<bool> visited (maxn, false);
+
+ll dfs(ll node) {
+  ll count = 0;
+
+  visited[node] = true;
+
+  for (ll i : employers[node]) {
+    if (! visited[i]) {
+      count += 1 + dfs(i); // Assim count recebe também os filhos e precisa de um return para isso
+    }
+  }
+  ns[node] = count;
+  return count;
+}
+
+int main() {
+  cin >> n;
+  ll x;
+
+  for (ll i = 2; i <= n;i++){
+    cin >> x;
+    x--;
+    employers[x].push_back(i-1);
+  }
+
+  dfs(0);
+
+  for (ll i = 0; i < n; i++) {
+    cout << ns[i] << ' ';
+  }
+  cout << endl;
+
+  return 0;
+}
+```
 ### [Decomposição de centróide](https://usaco-guide.translate.goog/plat/centroid?_x_tr_sl=en&_x_tr_tl=pt&_x_tr_hl=pt&_x_tr_pto=tc&lang=cpp)
 Decomposição de uma árvore para calcular seus caminhos
 ```c++
