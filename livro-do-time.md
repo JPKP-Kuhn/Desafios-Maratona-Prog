@@ -544,6 +544,69 @@ int main() {
   return 0;
 }
 ```
+### Algumas funções úteis para organizar os dados
+criar listas ou fazer rearranjos.
+
+#### Função next_permutation
+Rearranja os elementos para a próxima lexicográfica permutação que é maior que a anterior. Também pode ser com números, exemplo: {1, 2, 3} essa é a menor e a maior é {3, 2 ,1} se usar o next_permutation de novo na maior, então volta para a menor.
+```c++
+#include <algorithm>
+#include <bits/stdc++.h>
+#include <ios>
+#include <vector>
+using namespace std;
+using ll = long long;
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  string test;
+  cin >> test;
+  while(test != "#"){
+    if (next_permutation(test.begin(), test.end())){ // Se for possível foramar uma nova permutação, então o faz
+      cout << test << '\n';
+    } else {                                        // Não é possível formar uma nova permutação, pois já é a última
+      cout << "No Successor\n";
+    }
+    cin >> test;
+  }
+
+  return 0;
+}
+```
+
+#### Função nth_element
+Rearranjas os elementos de um intervalo, de forma que a nth posição estará na posição correta se fosse feito um sort() na lista inteira ao invés do nth_element.
+Útil quando eu não preciso organizar uma lista inteira, mas apenas algum elemento dela, como por exemplo, para calcular a mediana:
+
+```c++
+int main() {
+  ll n{};
+  vll valores;
+
+  while(cin >> n){
+
+    valores.push_back(n);
+
+    ll size = valores.size();
+    vll temp = valores;
+
+    // Mediana
+    if (size % 2 == 1) { // Tamanho ímpar de valores
+      nth_element(temp.begin(), temp.begin()+size/2, temp.end()); // Apenas o elemento do meio estará na posição correta
+      cout << temp[size/2] << '\n';
+    } else {             // Tamanho par de valores
+      nth_element(temp.begin(), temp.begin()+ size/2 - 1, temp.end());
+      ll a = temp[size/2 - 1];
+      nth_element(temp.begin(), temp.begin()+size/2, temp.end());
+      ll b = temp[size/2];
+      cout  << (a+b)/2 << '\n';
+    }
+  }
+  return 0;
+}
+```
 
 ## Árvores
 Estrutura que possui uma organização hierárquica entre seus elementos
