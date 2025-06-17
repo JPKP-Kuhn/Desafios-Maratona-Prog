@@ -17,19 +17,22 @@ int main() {
   bitset<MAXN> minutes;
   while (cin >> n >> m && (n != 0 || m != 0)){
     bool conflito = false;
-    for (ll i=0;i<n && !(conflito);i++){
+    for (ll i=0;i<n;i++){
       ll start, end;
       cin >> start >> end;
 
-      for (ll j=start;j<end && j<MAXN;j++){
-        if (minutes.test(j)){
-          conflito = true;
-          break;
-        } 
-        minutes.set(j);
+
+      if (!conflito) {
+        for (ll j=start;j<end && j<MAXN;j++){
+          if (minutes.test(j)){
+            conflito = true;
+            break;
+          } 
+          minutes.set(j);
+        }
       }
     }
-    for (ll i = 0; i < m && !conflito; i++) {
+    for (ll i = 0; i < m; i++) {
       ll start, end, interval;
       cin >> start >> end >> interval;
       for (ll k = 0; start + k * interval < MAXN && !conflito; k++){
@@ -39,12 +42,14 @@ int main() {
         if (task_start >= MAXN) break;
         if (task_end > MAXN) task_end = MAXN;
 
-        for (ll j=task_start;j<task_end;j++){
-          if (minutes.test(j)){
-            conflito = true;
-            break;
-          } 
-          minutes.set(j);
+        if (!conflito){
+          for (ll j=task_start;j<task_end;j++){
+            if (minutes.test(j)){
+              conflito = true;
+              break;
+            } 
+            minutes.set(j);
+          }
         }
       }
     }
