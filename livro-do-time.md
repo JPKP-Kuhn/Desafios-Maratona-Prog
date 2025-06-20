@@ -544,6 +544,65 @@ int main() {
   return 0;
 }
 ```
+## Programação Dinâmica (PD, ou DP)
+utilizar um vetor ou outra estrutura para guardar valores já calculados e assim otimizar a conta. Caraterística principal é a recursão.
+
+Calcular número de fibonacci
+```c++
+ll pd[MOD];     // MOD, pois a sequência pode crescer muito
+bool found[MOD];
+ 
+ll dp(ll n){
+  if (found[n]) return pd[n];
+  if (n == 0) return 0;
+  if (n == 1) return 1;
+
+  found[n] = true;
+  return pd[n] = (dp(n-1) + dp(n-2))%MOD;
+}
+pd[0] = 0; pd[1] = 1; // É necessário incializar a pd;
+ 
+```
+
+### LCS - Sequência comum máxima
+Dadas duas string, qual é o comprimento da maior subsequência comum entre elas.
+```c++
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Returns length of LCS for s1[0..m-1], s2[0..n-1]
+int lcs(string &s1, string &s2) {
+    int m = s1.size();
+    int n = s2.size();
+
+    // Initializing a matrix of size (m+1)*(n+1)
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+
+    // Building dp[m+1][n+1] in bottom-up fashion
+    for (int i = 1; i <= m; ++i) {
+        for (int j = 1; j <= n; ++j) {
+            if (s1[i - 1] == s2[j - 1])
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            else
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+        }
+    }
+
+    // dp[m][n] contains length of LCS for s1[0..m-1]
+    // and s2[0..n-1]
+    return dp[m][n];
+}
+
+int main() {
+    string s1 = "AGGTAB";
+    string s2 = "GXTXAYB";
+    cout << lcs(s1, s2) << endl;
+
+    return 0;
+}
+```
+
 ### Algumas funções úteis para organizar os dados
 criar listas ou fazer rearranjos.
 
