@@ -7,82 +7,37 @@ Alguns códigos deste livro estarão em Python ou C++.
 ## .vimrc
 Configuração do arquivo `.vimrc` para melhorar o uso do editor durante a maratona.
 ```vim
-" Comments in Vimscript start with a `"`.
-
-" If you open this file in Vim, it'll be syntax highlighted for you.
-
-" Vim is based on Vi. Setting `nocompatible` switches from the default
-" Vi-compatibility mode and enables useful Vim functionality. This
-" configuration option turns out not to be necessary for the file named
-" '~/.vimrc', because Vim automatically enters nocompatible mode if that file
-" is present. But we're including it here just in case this config file is
-" loaded some other way (e.g. saved as `foo`, and then Vim started with
-" `vim -u foo`).
 set nocompatible
 
-" Turn on syntax highlighting.
 syntax on
 
-" Disable the default Vim startup message.
 set shortmess+=I
 
-" Show line numbers.
 set number
 
-" This enables relative line numbering mode. With both number and
-" relativenumber enabled, the current line shows the true line number, while
-" all other lines (above and below) are numbered relative to the current line.
-" This is useful because you can tell, at a glance, what count is needed to
-" jump up or down to a particular line, by {count}k to go up or {count}j to go
-" down.
 set relativenumber
 
-" Always show the status line at the bottom, even if you only have one window open.
 set laststatus=2
 
-" The backspace key has slightly unintuitive behavior by default. For example,
-" by default, you can't backspace before the insertion point set with 'i'.
-" This configuration makes backspace behave more reasonably, in that you can
-" backspace over anything.
 set backspace=indent,eol,start
 
-" By default, Vim doesn't let you hide a buffer (i.e. have a buffer that isn't
-" shown in any window) that has unsaved changes. This is to prevent you from "
-" forgetting about unsaved changes and then quitting e.g. via `:qa!`. We find
-" hidden buffers helpful enough to disable this protection. See `:help hidden`
-" for more information on this.
 set hidden
 
-" This setting makes search case-insensitive when all characters in the string
-" being searched are lowercase. However, the search becomes case-sensitive if
-" it contains any capital letters. This makes searching more convenient.
 set ignorecase
 set smartcase
 
-" Enable searching as you type, rather than waiting till you press enter.
 set incsearch
 
-" Unbind some useless/annoying default key bindings.
 nmap Q <Nop> " 'Q' in normal mode enters Ex mode. You almost never want this.
 
-" Disable audible bell because it's annoying.
 set noerrorbells visualbell t_vb=
 
-" Enable mouse support. You should avoid relying on this too much, but it can
-" sometimes be convenient.
 set mouse+=a
 
-" Try to prevent bad habits like using the arrow keys for movement. This is
-" not the only possible bad habit. For example, holding down the h/j/k/l keys
-" for movement, rather than using more efficient movement commands, is also a
-" bad habit. The former is enforceable through a .vimrc, while we don't know
-" how to prevent the latter.
-" Do this in normal mode...
 nnoremap <Left>  :echoe "Use h"<CR>
 nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up>    :echoe "Use k"<CR>
 nnoremap <Down>  :echoe "Use j"<CR>
-" ...and in insert mode
 inoremap <Left>  <ESC>:echoe "Use h"<CR>
 inoremap <Right> <ESC>:echoe "Use l"<CR>
 inoremap <Up>    <ESC>:echoe "Use k"<CR>
@@ -953,6 +908,162 @@ int main() {
     return 0;
 }
 
+```
+
+### Ordenação topológica e algoritmo de Kahn
+Deve ser usado num grafo direcionado acíclico, pois a ordenação topológica se baseia no grau de cada nó. Este grau é 0 se não tem nenhum nó apontando para ele, assim ele se torna o source do grafo. O algoritmo de Kahn usa BFS.
+
+Geeksforgeeks -
+```c++
+// We mainly take input graph as a set of edges. This function is
+// mainly a utility function to convert the edges to an adjacency
+// list
+vector<vector<int>> constructadj(int V,vector<vector<int>> &edges){
+    
+    // Graph represented as an adjacency list
+    vector<vector<int> > adj(V);
+
+    // Constructing adjacency list
+    for (auto i : edges) {
+        adj[i[0]].push_back(i[1]);
+    }
+    
+    return adj;
+}
+
+// Function to return list containing vertices in
+// Topological order.
+vector<int> topologicalSort(int V, vector<vector<int> >& edges)
+{
+    vector<vector<int>> adj = constructadj(V,edges);
+    
+    // Vector to store indegree of each vertex
+    vector<int> indegree(V);
+    for (int i = 0; i < V; i++) {
+        for (auto it : adj[i]) {
+            indegree[it]++;
+        }
+    }
+    // Queue to store vertices with indegree 0
+    queue<int> q;
+    for (int i = 0; i < V; i++) {
+        if (indegree[i] == 0) {
+            q.push(i);
+        }
+    }
+    vector<int> result;
+    while (!q.empty()) {
+        int node = q.front();
+        q.pop();
+        result.push_back(node);
+        
+        // Decrease indegree of adjacent vertices as the
+        // current node is in topological order
+        for (auto it : adj[node]) {
+            indegree[it]--;
+
+            // If indegree becomes 0, push it to the queue
+            if (indegree[it] == 0)
+                q.push(it);
+        }
+    }
+
+    // Check for cycle
+    if (result.size() != V) {
+        cout << "Graph contains cycle!" << endl;
+        return {};
+    }
+    return result;
+}
+int main()
+{
+    // Number of nodes
+    int V = 6;
+
+    // Edges
+    vector<vector<int> > edges
+        = {{0, 1}, {1, 2}, {2, 3},
+           {4, 5}, {5, 1}, {5, 2}};
+
+    vector<int> result = topologicalSort(V, edges);
+
+    // Displaying result
+    for (auto i : result) {
+        cout << i << " ";
+    }
+    return 0;
+}
+```
+
+Exemplo de probleam resolvido com algoritmo de Kahn:
+Manyfile, basicamente: tem que saber o tempo que leva para compilar um programa, sendo que tem arquivos que dependem de outros para serem compilados. Retorna -1 se é impossível, ou seja há um ciclo, arquivo 0 depende de 1 e 1 depende de 0, caso contrário retorna o tempo que levou, sendo que todos são compilados ao mesmo tempo, mas o total será aquele que depende de mais arquivos para ser compilado -
+```c++
+ll n;
+vector<vll> adj;
+
+ll digraph(ll v){  // Algoritmo de Kahn que verifica se há um ciclo
+  vll degree(v, 0);
+  queue<ll> q;
+  vll level(v, 0);
+  ll processed = 0;
+
+  // Degree of vertices
+  for (ll i = 0; i<v; i++){
+    for (ll j : adj[i]){
+      degree[j]++;
+    }
+  }
+  // add degree 0 to the q
+  for (ll i=0;i<v;i++){
+    if (degree[i] == 0){
+      q.push(i);
+      level[i] = 1;
+    }
+  }
+
+  ll maxTime{};
+  while(!q.empty()){
+    ll u = q.front();
+    q.pop();
+    processed++;
+    maxTime = max(maxTime, level[u]);
+
+    for (ll e : adj[u]){
+      degree[e]--;
+      if (degree[e] == 0){
+        level[e] = level[u] + 1;
+        q.push(e);
+      }
+    }
+  }
+  if (processed != v){ // If is a cicle, return -1;
+    return -1;
+  }
+  return maxTime;
+}
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  while (cin >> n){
+    adj.clear();
+    adj.resize(n);
+    for (ll i=0; i<n; i++){
+      ll m;
+      cin >> m;
+      for (ll j=0;j<m;j++){
+        ll x;
+        cin >> x;
+        adj[i].push_back(--x);
+      }
+    }
+
+    ll res = digraph(n);
+    cout << res << '\n';
+  }
+  return 0;
+}
 ```
 
 ## Geometria
