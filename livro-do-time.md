@@ -7,43 +7,51 @@ Alguns códigos deste livro estarão em Python ou C++.
 ## .vimrc
 Configuração do arquivo `.vimrc` para melhorar o uso do editor durante a maratona.
 ```vim
-set nocompatible
-
-syntax on
-
-set shortmess+=I
-
-set number
-
-set relativenumber
-
-set laststatus=2
-
-set backspace=indent,eol,start
-
-set hidden
-
-set ignorecase
-set smartcase
-
+set autoindent
+set clipboard=unnamedplus
+set et
 set incsearch
+set number
+set relativenumber
+set shiftwidth=4
+set showcmd
+set smarttab
+set softtabstop=4
+set wildmenu
+set mouse="a"
 
-nmap Q <Nop> " 'Q' in normal mode enters Ex mode. You almost never want this.
+nnoremap ; :
+vnoremap ; :
 
-set noerrorbells visualbell t_vb=
+nnoremap J }
+nnoremap K {
+vnoremap J }
+vnoremap K {
 
-set mouse+=a
-
-nnoremap <Left>  :echoe "Use h"<CR>
-nnoremap <Right> :echoe "Use l"<CR>
-nnoremap <Up>    :echoe "Use k"<CR>
-nnoremap <Down>  :echoe "Use j"<CR>
-inoremap <Left>  <ESC>:echoe "Use h"<CR>
-inoremap <Right> <ESC>:echoe "Use l"<CR>
-inoremap <Up>    <ESC>:echoe "Use k"<CR>
-inoremap <Down>  <ESC>:echoe "Use j"<CR>
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
 ```
 
+## Template para código C++
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using vll = vector<ll>;
+
+const ll MAXN = 1e5 + 10;// Range seguro para vetores e arrays
+const ll INF = 1e18+5;   // PD e inicialização de valor mínimo
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  return 0;
+}
+
+```
 
 ## Matemática
 Apenas algumas dicas:
@@ -136,6 +144,64 @@ while entrada > 0:
 
     entrada -= 1
 
+```
+
+### Método da Bisecção
+Para encontrar as raízes de uma função. Teorema de Bolzano, usa busca binária.
+- Uma função contínua em [a, b], se f(a) < 0 e f(b) > 0, então existe um x tal que f(x) = 0.
+Com essa ideia acima é possível fazer um busca binária para encontrar as raízes da função.
+
+```c++
+using lld = long double;
+const lld EPS = 1e-9;
+// Equação a ser resolvida
+// p ∗ e−x + q ∗ sin(x) + r ∗ cos(x) + s ∗ tan(x) + t ∗ x2 + u = 0
+
+lld p, q, r, s, t, u;
+// Determinar x
+double x;
+
+// Minha função
+lld f(lld x){
+  return p * exp(-x) + q * sin(x) + r * cos(x) + s * tan(x) + t * pow(x, 2) + u; 
+}
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+
+  while (cin >> p >> q >> r >> s >> t >> u){ // Vários casos de teste até EOF
+    // intervalo, 0 <= x <= 1
+    lld a = 0.0, b = 1.0;
+    // O teorema de Bolzano (valor intermediário) foi satisfeito? 
+    // f(a0) * f(b0) < 0 -> existe troca de sinal no intervalo dado e, portanto
+    // existe raiz nele.
+    int bolzano_ok = (f(a)*f(b) > 0?0:1);
+    if (!bolzano_ok) {
+      cout << "No solution\n";
+      continue;
+    }
+    if (fabs(f(a)) < EPS || fabs(f(b)) < EPS){
+      cout << fixed << setprecision(4) << (f(a)==0 ? a : b) << '\n';
+      continue;
+    }
+
+    // Método da bissecção
+    // Busca binária
+    while (b - a > EPS){
+      lld pm = (a + b)/2.0;
+      if (fabs(f(pm)) < EPS){
+        break;
+      }
+      if (f(a)*f(pm) < 0){
+        b = pm; // Solução está a esquerda
+      } else {
+        a = pm; // Solução está a direita
+      }
+    }
+    cout << fixed << setprecision(4) << (a+b)/2.0 << '\n';
+  }
+  return 0;
+}
 ```
 
 ## Matrizes
