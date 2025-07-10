@@ -58,9 +58,6 @@ Apenas algumas dicas:
 
 - Soma de uma Progressão Aritmética: [Missing Number](https://cses.fi/problemset/task/1083/)
 ```c++
-#include <iostream>
-using namespace std;
-
 int main() {
     int n;
     cin >> n;
@@ -235,7 +232,6 @@ def ver_sudoku(sudoku):
             c = coluna.count(k)
             if c > 1:
                 return "NAO"
-
     # Verifica cada quadrante 3x3
     for i in range(3):
         for j in range(3):
@@ -306,15 +302,6 @@ void rotateCCW(vector<vector<int>>& m) {
 [codeforces](https://codeforces.com/gym/105327/problem/E)
 Precisa contar quantas vezes precisou girar a matriz para estar nas regras do problema.
 ```c++
-#include <bits/stdc++.h>
-#include <ios>
-#include <vector>
-using namespace std;
-using ll = long long;
-using vll = vector<ll>;
-
-const ll MAXN = pow(10, 5) + 10;
-
 bool rightBox (ll n, vector<vll>& casejewel) {
   for (ll i=0;i<n;i++){
     for (ll j=0;j<n-1;j++){
@@ -343,7 +330,6 @@ int main() {
 
   ll rotations{};
   while(!rightBox(n, casejewel) && rotations<4){
-
     // Rotates couterclockwise
     for (ll i = 0; i < n; i++) {
       for (ll j = i + 1; j < n; j++) {
@@ -355,12 +341,9 @@ int main() {
         swap(casejewel[i][j], casejewel[n - 1 - i][j]);
       }
     }
-
     rotations++;
   }
-
   cout << rotations << '\n';
-
 
   return 0;
 }
@@ -379,12 +362,6 @@ print(queue.popleft()) #Output 'a'
 [Throwing cards away I](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1876)
 Dado um número, terá um deck de cartas de 1 (Primeira no topo) até este número (Última carta do deck), descarte a carta do topo e mova a nova que agora está no topo para o final do deck.
 ```c++
-#include <bits/stdc++.h>
-#include <cstdio>
-#include <queue>
-using namespace std;
-using ll = long long;
-
 int n;
 int main() {
   for (;;) {
@@ -406,7 +383,6 @@ int main() {
       cards.pop();
       cards.push(d);
     }
-
     printf("Discarded cards:");
     int s = discarded.size();
     for (int i = 0; i < s-1; i++){
@@ -424,13 +400,6 @@ Semelhante a uma fila, mas seu primeiro elemento sempre é o maior que ela cont�
 [Add All](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1895)
 Calcular o custo mínimo para somar todos os números de uma sequência. Exemplo 1 2 3, terá saída 9, pois 1 + 2 = 3 e 3 + 3 = 6, o custo será o calor das operações, 3 + 6
 ```c++
-#include <bits/stdc++.h>
-#include <queue>
-#include <vector>
-using namespace std;
-using ll = long long;
-using vll = vector<ll>;
-
 ll n;
 int main() {
   while (cin >> n && n != 0) {
@@ -460,14 +429,8 @@ Operam como uma LIFO (Last-in, First-out)
 [Rails](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=455)
 Basicamente, recebe uma pilha de números e tem que saber se ela pode realmente ser uma pilha com números crescentes ou descrescentes. Yes se for 1 2 3 4 5 ou 5 4 3 2 1, mas No se for 5 4 1 2 3
 ```c++
-#include <bits/stdc++.h>
-#include <stack>
-using namespace std;
-using ll = long long;
-
 int main() {
   ll n;
-
   while(cin >> n && n != 0) {
     while (true) {
       vector<ll> alvo(n);
@@ -478,19 +441,15 @@ int main() {
       for (ll i =1;i < n; i++){
         cin >> alvo[i];
       }
-
       stack<ll> estacao;
       ll atual = 1; // Próximo vagão de A
-
       for (ll i =0; i < n; i++) {
         ll desejado = alvo[i];
-
         // Empilha até o desejado apracerer no topo
         while (atual <= n && (estacao.empty() || estacao.top() != desejado)) {
           estacao.push(atual);
           atual++;
         }
-
         if (estacao.top() == desejado && !estacao.empty()) {
           estacao.pop();
         } else {
@@ -513,17 +472,6 @@ São problemas que não envolvem nenhuma técnica de programação específica, 
 [Quem vai ser Reprovado](https://judge.beecrowd.com/pt/problems/view/2134)
 Basicamente ordenar os alunos em ordem crescente pelo número de questões corretas e, caso seja o mesmo número, então entre eles vale uma ordem lexicográfica, como a ordem alfabética por exemplo.
 ```c++
-#include <bits/stdc++.h>
-#include <ios>
-#include <vector>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-using namespace std;
-using ll = long long;
-using vll = vector<ll>;
-
 typedef struct aluno {
   string nome;
   int problemas;
@@ -686,10 +634,6 @@ pd[0] = 0; pd[1] = 1; // É necessário incializar a pd;
 ### LCS - Sequência comum máxima
 Dadas duas string, qual é o comprimento da maior subsequência comum entre elas.
 ```c++
-#include <iostream>
-#include <vector>
-using namespace std;
-
 // Returns length of LCS for s1[0..m-1], s2[0..n-1]
 int lcs(string &s1, string &s2) {
     int m = s1.size();
@@ -717,7 +661,6 @@ int main() {
     string s1 = "AGGTAB";
     string s2 = "GXTXAYB";
     cout << lcs(s1, s2) << endl;
-
     return 0;
 }
 ```
@@ -728,13 +671,6 @@ criar listas ou fazer rearranjos.
 #### Função next_permutation
 Rearranja os elementos para a próxima lexicográfica permutação que é maior que a anterior. Também pode ser com números, exemplo: {1, 2, 3} essa é a menor e a maior é {3, 2 ,1} se usar o next_permutation de novo na maior, então volta para a menor.
 ```c++
-#include <algorithm>
-#include <bits/stdc++.h>
-#include <ios>
-#include <vector>
-using namespace std;
-using ll = long long;
-
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
@@ -792,12 +728,6 @@ Estrutura que possui uma organização hierárquica entre seus elementos
 ### [Subordinates](https://cses.fi/problemset/task/1674)
 Dada a estrutura de uma empresa, calcule para cada empregado, os seus subordinados
 ```c++
-#include <bits/stdc++.h>
-#include <vector>
-using namespace std;
-using ll = long long;
-
-const ll maxn = 200010;
 ll n;
 vector<ll> employers[maxn];
 vector<ll> ns (maxn, 0); // Número de subordinados
@@ -840,13 +770,6 @@ int main() {
 ### [Decomposição de centróide](https://usaco-guide.translate.goog/plat/centroid?_x_tr_sl=en&_x_tr_tl=pt&_x_tr_hl=pt&_x_tr_pto=tc&lang=cpp)
 Decomposição de uma árvore para calcular seus caminhos
 ```c++
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
-const int maxn = 200010;
-
 int n;
 vector<int> adj[maxn];
 int subtree_size[maxn];
@@ -936,9 +859,7 @@ Problema OBI [Fissura](https://olimpiada.ic.unicamp.br/pratique/ps/2020/f1/fissu
 ```python
 # Verificar a erupção de um vulcão
 import sys
-
 e = sys.stdin.read().splitlines()
-
 n, f = map(int, e[0].split())
 del e[0]
 
@@ -946,13 +867,11 @@ del e[0]
 mat = [None] * n
 for i in range(n):
     mat[i] = list(map(int, e[i]))
-
 # Lista de teste para controlar a propagação da lava
 lista = []
 if mat[0][0] <= f:
     mat[0][0] = '*'
     lista.append((0,0))
-
 # Para verificar as direções: para cima (-1, 0), para direita (0, 1), baixo (1, 0) e esquerda (0, -1)
 dy = [-1, 0, 1, 0] # São vetores de direção
 dx = [0, 1, 0, -1]
@@ -966,7 +885,6 @@ while lista != []:
     for d in range(4):
         iv = i + dy[d] # Nova coordenada y
         jv = j + dx[d] # Nova coordenada x
-
         # Verifica se a nova posição está dentro dos limites da matriz
         if iv >= 0 and iv <= n-1 and jv >= 0 and jv <= n-1:
             if mat[iv][jv] != '*' and mat[iv][jv] <= f:
@@ -1022,21 +940,15 @@ void dfs(int v) {
 #### Aplicação de DFS
 Problema [Counting Rooms](https://cses.fi/problemset/task/1192)
 ```c++
-#include <bits/stdc++.h>
-using namespace std;
-
 // DFS function to mark all connected floor cells as visited
 void dfs(vector<string>& mat, int i, int j, int n, int m) {
     // Check if current position is valid and is a floor
     if (i < 0 || i >= n || j < 0 || j >= m || mat[i][j] == '#') {
         return;
     }
-    
     mat[i][j] = '#';
-    
     int dx[] = {0, 0, 1, -1};
     int dy[] = {1, -1, 0, 0};
-    
     // Explore all four directions
     for (int d = 0; d < 4; d++) {
         int nx = i + dx[d];
@@ -1236,15 +1148,6 @@ Problemas que envolvem forams geométricas e plano cartesiano
 ### Ponto dentro de um polígono
 Dada as coordenadas dos vértices de um polígono, e um ponto, quero descobrir se esse ponto está dentro, fora ou na borda
 ```c++
-#include <bits/stdc++.h>
-#include <ios>
-#include <vector>
-using namespace std;
-using ll = long long;
-using vll = vector<ll>;
-
-const ll MAXN = pow(10, 5) + 10;
-
 struct Point {
   ll x, y;
 };
