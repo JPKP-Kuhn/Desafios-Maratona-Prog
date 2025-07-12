@@ -722,6 +722,29 @@ int main() {
 }
 ```
 
+#### Verificar se é um palíndromo:
+```c++
+bool palindromo(const string& s) {
+  for (ll j = 0; j < (ll)s.length() / 2; j++) {
+    if (s[j] != s[s.length() - j - 1]) return false;
+  }
+  return true;
+}
+```
+
+#### Criar um número em outra base numérica
+Bases numéricas entre 2 e 9.
+```c++
+string to_base(ll i, ll base) {
+  string res;
+  while (i > 0) {
+    res = char('0' + (i % base)) + res;
+    i /= base;
+  }
+  return res;
+}
+```
+
 ## Árvores
 Estrutura que possui uma organização hierárquica entre seus elementos
 
