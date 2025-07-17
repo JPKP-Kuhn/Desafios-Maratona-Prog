@@ -630,6 +630,52 @@ ll dp(ll n){
 pd[0] = 0; pd[1] = 1; // É necessário incializar a pd;
  
 ```
+### Soma prefixada
+Tem um vetor, quero somar rapidamente os valores de [i, j]. Para somar rapidamente esse intervalo, guardo em um outro vetor as somas do início até o v[i].
+```c++
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  ll n, q;
+  cin >> n >> q;
+  vll v(n+1); // soma[0] = 0
+  for (ll i=1; i<=n; i++){
+    cin >> v[i];
+    // Aqui estou modificando o próprio vetor.
+    v[i] += v[i-1]; // Soma acumulada 
+  }
+  while(q--){
+    ll a, b;
+    cin >> a >> b;
+    cout << v[b] - v[a-1] << '\n'; // soma de v[a] até v[b];
+  }
+  return 0;
+}
+```
+Outro exemplo:
+```c++
+// function to find the prefix sum array
+vector<int> prefSum(vector<int> &arr) {
+    int n = arr.size();
+    
+    // to store the prefix sum
+    vector<int> prefixSum(n);
+    // initialize the first element
+    prefixSum[0] = arr[0];
+    // Adding present element with previous element
+    for (int i = 1; i < n; i++)
+        prefixSum[i] = prefixSum[i - 1] + arr[i];
+    
+    return prefixSum;
+}
+int main() {
+    vector<int> arr = {10, 20, 10, 5, 15};
+    vector<int> prefixSum = prefSum(arr);
+    for(auto i: prefixSum) {
+        cout << i << " " ;
+    }
+    return 0;
+}```
 
 ### LCS - Sequência comum máxima
 Dadas duas string, qual é o comprimento da maior subsequência comum entre elas.
@@ -790,6 +836,131 @@ int main() {
   return 0;
 }
 ```
+### Trie
+Estrutura de dados para guardar dinamicamente um conjunto de string. Funciona como uma árvore em que cada char da string é armazenado no nó. Basta seguir cada nó que se formará a string original. Strings que compartilham mesmo char, terão este char em comum.
+```c++
+class TrieNode
+{
+  public:
+    // Array for children nodes of each node
+    TrieNode *children[26];
+
+    // for end of word
+    bool isLeaf;
+
+    TrieNode()
+    {
+        isLeaf = false;
+        for (int i = 0; i < 26; i++)
+        {
+            children[i] = nullptr;
+        }
+    }
+};
+  // Method to insert a key into the Trie
+void insert(TrieNode *root, const string &key)
+{
+    // Initialize the curr pointer with the root node
+    TrieNode *curr = root;
+    // Iterate across the length of the string
+    for (char c : key)
+    {
+        // Check if the node exists for the
+        // current character in the Trie
+        if (curr->children[c - 'a'] == nullptr)
+        {
+            // If node for current character does
+            // not exist then make a new node
+            TrieNode *newNode = new TrieNode();
+
+            // Keep the reference for the newly
+            // created node
+            curr->children[c - 'a'] = newNode;
+        }
+        // Move the curr pointer to the
+        // newly created node
+        curr = curr->children[c - 'a'];
+    }
+    // Mark the end of the word
+    curr->isLeaf = true;
+}
+// Method to search a key in the Trie
+bool search(TrieNode *root, const string &key)
+{
+    if (root == nullptr)
+    {
+        return false;
+    }
+    // Initialize the curr pointer with the root node
+    TrieNode *curr = root;
+
+    // Iterate across the length of the string
+    for (char c : key)
+    {
+        // Check if the node exists for the
+        // current character in the Trie
+        if (curr->children[c - 'a'] == nullptr)
+            return false;
+        // Move the curr pointer to the
+        // already existing node for the
+        // current character
+        curr = curr->children[c - 'a'];
+    }
+    // Return true if the word exists
+    // and is marked as ending
+    return curr->isLeaf;
+}
+// Method to check if a prefix exists in the Trie
+bool isPrefix(TrieNode *root, const string &prefix)
+{
+    // Initialize the curr pointer with the root node
+    TrieNode *curr = root;
+    // Iterate across the length of the prefix string
+    for (char c : prefix)
+    {
+        // Check if the node exists for the current character in the Trie
+        if (curr->children[c - 'a'] == nullptr)
+            return false;
+
+        // Move the curr pointer to the already existing node
+        // for the current character
+        curr = curr->children[c - 'a'];
+    }
+    // If we reach here, the prefix exists in the Trie
+    return true;
+  }
+int main()
+{
+    // Create am example Trie
+    TrieNode *root = new TrieNode();
+    vector<string> arr = {"and", "ant", "do", "dad"};
+    for (const string &s : arr)
+    {
+        insert(root, s);
+    }
+    // One by one search strings
+    vector<string> searchKeys = {"do", "gee", "bat"};
+    for (string &s : searchKeys){
+        
+        if(search(root, s))
+            cout << "true ";
+        else
+            cout << "false ";
+    } 
+    cout<<"\n";
+    // One by one search for prefixes
+    vector<string> prefixKeys = {"ge", "ba", "do", "de"};
+    for (string &s : prefixKeys){
+        
+        if (isPrefix(root, s))
+            cout << "true ";
+        else
+            cout << "false ";
+    }
+    return 0;
+}
+```
+
 ### [Decomposição de centróide](https://usaco-guide.translate.goog/plat/centroid?_x_tr_sl=en&_x_tr_tl=pt&_x_tr_hl=pt&_x_tr_pto=tc&lang=cpp)
 Decomposição de uma árvore para calcular seus caminhos
 ```c++
