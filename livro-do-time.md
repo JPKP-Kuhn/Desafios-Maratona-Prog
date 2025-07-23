@@ -201,6 +201,16 @@ int main() {
 }
 ```
 
+### Geometria Analítica
+ O fato de o máximo divisor comum (MDC) entre as diferenças das coordenadas x e y de dois pontos em um plano cartesiano ser igual a 1, ou seja, mdc(x₂ - x₁, y₂ - y₁) = 1, é um conceito fundamental na geometria dos pontos de grade. Isso significa que não há outros pontos de grade no segmento de reta que conecta esses dois pontos, além dos próprios pontos finais.
+
+### Funções trigonométricas;
+sin(), cos() e tan() retornam double e esperam o ângulo em radianos, portanto:
+```c++
+double angle = 45;
+double rad = angle * M_PI / 180.0;
+```
+
 ## Matrizes
 Uma lista de listas
 
