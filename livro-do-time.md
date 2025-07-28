@@ -687,6 +687,45 @@ int main() {
     return 0;
 }```
 
+### 2D Prefix Sum
+É uma soma prefixada, mas em uma matriz. Usada se for necessário somar todos os elementos de uma submatriz da matriz original. Cada elemento i,j  da matriz de soma prefixada representa a soma dos elementos de 0,0 até i,j.
+```c++
+vector<int> prefixSum2D(vector<vector<int>> &mat, vector<vector<int>> &queries) {
+    int rows = mat.size(), cols = mat[0].size();
+    // create prefix matrix of size 
+    // (rows+1)x(cols+1) to simplify boundaries
+    vector<vector<int>> pre(rows + 1, vector<int>(cols + 1, 0));
+    // Build prefix matrix with 1-based indexing
+    for (int i = 1; i <= rows; i++) {
+        for (int j = 1; j <= cols; j++) {
+            pre[i][j] = mat[i - 1][j - 1] 
+                      + pre[i - 1][j] 
+                      + pre[i][j - 1] 
+                      - pre[i - 1][j - 1];
+        }
+    }
+    vector<int> result;
+    // process each query using inclusion-exclusion
+    for (auto &q : queries) {
+        int topRow = q[0] + 1, leftCol = q[1] + 1;
+        int bottomRow = q[2] + 1, rightCol = q[3] + 1;
+        // get total area from (1,1) to (bottomRow, rightCol)
+        int total = pre[bottomRow][rightCol];
+        // subtract area above the submatrix
+        int top = pre[topRow - 1][rightCol];
+        // subtract area to the left of the submatrix
+        int left = pre[bottomRow][leftCol - 1];
+        // add back the overlapping top-left area,
+        // which was subtracted twice
+        int overlap = pre[topRow - 1][leftCol - 1];
+        // final submatrix sum using inclusion-exclusion
+        int sum = total - top - left + overlap;
+        result.push_back(sum);
+    }
+    return result;
+}
+```
+
 ### LCS - Sequência comum máxima
 Dadas duas string, qual é o comprimento da maior subsequência comum entre elas.
 ```c++
@@ -1430,4 +1469,5 @@ int main() {
 - [Competitive Programing 3, by Halim](https://files.gitter.im/SamZhangQingChuan/sam/DA1g/Steven-Halim_-Felix-Halim-Competitive-Programming-3_-The-New-Lower-Bound-of-Programming-Contests-Lulu.com-_2013_.pdf)
 - [Competitive Programmer’s Handbook](https://cses.fi/book/book.pdf)
 - [Algorithms for Competitive Programming](https://cp-algorithms.com/index.html)
+- [GeeksforGeeks](https://www.geeksforgeeks.org/)
 - [USACO](https://usaco.guide/)
