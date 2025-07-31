@@ -211,6 +211,39 @@ double angle = 45;
 double rad = angle * M_PI / 180.0;
 ```
 
+### Exponenciação Rápida
+É possível dividir a exponenciação em partes, ao invés de fazer a¹⁴ é possível dividir em a⁸ * a⁴ * a² assim podemos também aproveitar a representação binária do expoente
+```c++
+int expRapida(int base, long long exp, int mod){
+  int res = 1;
+  for(int i=0; i < 63; i++){
+    if(exp&(1LL << i)) 
+      res = (res*1LL*base)%mod;
+    base = (base*1LL*base)%mod;
+  }
+  return res;
+}
+```
+Ou mais simples pode ser:
+```c++
+int expRapida(int base, long long exp, int mod){
+  int res = 1;
+  while(exp>0){
+    if(exp&1LL) 
+      res = (res*1LL*base)%mod;
+    base = (base*1LL*base)%mod;
+    exp = exp>>1;
+  }
+  return res;
+}
+```
+Com isso também será possível calcular o inverso modular facilmente
+```c++
+int invMod(int a, int mod){
+  return expRapida(a, mod-2, mod);
+}
+```
+
 ## Matrizes
 Uma lista de listas
 
