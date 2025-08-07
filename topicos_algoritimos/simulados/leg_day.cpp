@@ -6,11 +6,11 @@ string emoji(string s){
   if (s == "rest"){
     return "\U0001F60E"; //  -> SMILING FACE WITH SUNGLASSES (tem "face")
   } else if (s == "leg"){
-    return "\U0001FA7F"; //  -> MECHANICAL LEG (tem "leg")
+    return "\U0001F9B5"; //  -> MECHANICAL LEG (tem "leg")
   } else if (s == "arm" || s == "biceps"){
-    return "\U0001FA7E"; //  -> MECHANICAL ARM (tem "arm")
+    return "\U0001F4AA"; //  -> MECHANICAL ARM (tem "arm")
   } else {
-    return "?"; // fallback
+    return "\U0001F916"; // fallback
   }
 }
 
