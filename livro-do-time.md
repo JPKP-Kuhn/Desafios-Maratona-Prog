@@ -759,6 +759,25 @@ vector<int> prefixSum2D(vector<vector<int>> &mat, vector<vector<int>> &queries) 
 }
 ```
 
+### MaxSubArraySum
+Em uma array com números inteiros, encontrar a maior soma possível numa subarray. Por exemplo: {2, 3, -8, 7, -1, 2, 3}, terá maior soma a partir do 7 até o final, sendo 11.
+```c++
+int maxSubarraySum(vector<int> &arr) {
+    // Stores the result (maximum sum found so far)
+    int res = arr[0];           
+    // Maximum sum of subarray ending at current position
+    int maxEnding = arr[0];     
+    for (int i = 1; i < arr.size(); i++) {
+        // Either extend the previous subarray or start 
+        // new from current element
+        maxEnding = max(arr[i], maxEnding + arr[i]);
+
+        // Update result if the new subarray sum is larger
+        res = max(res, maxEnding);
+    }
+    return res;
+```
+
 ### LCS - Sequência comum máxima
 Dadas duas string, qual é o comprimento da maior subsequência comum entre elas.
 ```c++
@@ -1496,6 +1515,48 @@ int main() {
   return 0;
 }
 ```
+## Teoria de jogos Combinatórios
+### Jogo do Nim
+```c++
+
+/*
+  Jogo do Nim - Análise por Nim-sum (XOR das pilhas)
+  Regra normal: quem pega a última pedra vence.
+
+  Teorema:
+    - Se o XOR de todos os tamanhos de pilha (nim-sum) for 0 → posição perdedora.
+    - Caso contrário → posição ganhadora.
+*/
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n; // número de pilhas
+    cin >> n;
+
+    vector<int> pilha(n);
+    for (int i = 0; i < n; i++) cin >> pilha[i];
+
+    int nim_sum = 0;
+    for (int pedras : pilha) nim_sum ^= pedras;
+    if (nim_sum == 0)
+        cout << "PERDEDOR\n";  // posição perdedora para o primeiro jogador
+    else
+        cout << "GANHADOR\n";  // posição ganhadora para o primeiro jogador
+    return 0;
+}
+```
+
+Problema resolvido com jogo do Nim. Terão 3 pilhas de batata. Pode remover todas as batadas da pilha, ou um valor n, sendo 1 <= n <= min{pilha}, ou seja, uma entrada 5 4 2. Pode remover todas duma pilha, ou um valor entre 1 e 2(sendo este o menor dentre as 3). Ganha o que remover a última batata, você é o primeiro a jogar. Assim:
+```c++
+  if ((a ^ b ^ c) == 0){ // a b c são a quantidade de batata em cada pilha
+    cout << "No\n"; // Não é possível vencer
+  } else {
+    cout << "Yes\n";
+  }
+```
+
 
 ## Referências -
 - Todos os desafios contidos neste [repositório](https://github.com/JPKP-Kuhn/Desafios-Maratona-Prog)
