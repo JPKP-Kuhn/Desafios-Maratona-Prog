@@ -392,6 +392,53 @@ int main() {
 }
 ```
 
+### Distância Manhattan e Chebyshev
+Medir a distância entre dois pontos em uma matriz desconsiderando o movimento pela diagonal, manhattan, ou considerando a diagonal, chebyshev.
+Fórmula manhattan: `abs(x1 - x2) + abs(y1 - y2)` 
+Fórmula chebyshev: `max(abs(x2 - x1), abs(y2 - y1))` 
+
+Problema Caça Tesouro:
+A distância vai ser correta se tiver a mesma distância manhattan do que d. Brute Force em todas as posições do grid para encontrar uma com a distância d para cada pista.
+```c++
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    vector<tuple<int, int, int>> pistas(k);
+    for (int i = 0; i < k; ++i) {
+        int x, y, d;
+        cin >> x >> y >> d;
+        pistas[i] = {x, y, d};
+    }
+    int count = 0;
+    int ansX = -1, ansY = -1;
+    // Testa todas as posições possíveis do grid
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            bool ok = true;
+            for (auto &[px, py, dist] : pistas) {
+                int d = abs(i - px) + abs(j - py);
+                if (d != dist) {
+                    ok = false;
+                    break;
+                }
+            }
+            if (ok) {
+                count++;
+                ansX = i;
+                ansY = j;
+            }
+        }
+    }
+    if (count == 1) {
+        cout << ansX << " " << ansY << "\n";
+    } else {
+        cout << "-1 -1\n";
+    }
+    return 0;
+}
+```
+
 ## Fila, queue
 Operam como uma FIFO (First-in First-out)
 ```python
