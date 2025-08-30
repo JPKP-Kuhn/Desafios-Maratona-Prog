@@ -605,6 +605,39 @@ int main() {
 ```
 ## Backtracking
 Envolve justamente tentar um caminho e voltar atrás, sendo como uma força bruta até achar um caminho possível. Utiliza recursão.
+Códigos bastante ineficientes, mas necessários quando não se outro jeito se não testar todas as possibilidades, então geralmente os valores de entrada vão ser pequenos.
+
+Criar todos os subconjuntos: Problema das barras, se quer construir uma barra de um tamanho exato, juntando outras barras 
+```c++
+ll want, p;
+int main() {
+  ll t; cin >> t;
+  while(t--){
+    cin >> want >> p;
+    vll bars(p);
+    for (ll &x : bars) cin >> x;
+    bool f{};
+    // Todos os subconjuntos possíveis
+    ll bitTotal = 1LL << p;
+    for (ll i=0; i<bitTotal; i++){
+      bitset<20>b(i);
+      ll somas{};
+      for (ll j=0; j<p; j++){
+        if (b.test(j)){
+          somas+=bars[j];
+        }
+      }
+      if (somas == want){
+        f = true;
+        break;
+      }
+    }
+    cout << (f ? "YES\n" : "NO\n");
+  }
+
+  return 0;
+}
+```
 
 Dado duas peças de dominó, uma a esquerda para começo e uma a direita para o fim e com um espaço entre elas. Utilize algumas outras peças deste dominó para saber se é possível formar um caminho conectando a esquerda com a diretia, usando as regrs do jogo para conectar.
 ```c++
