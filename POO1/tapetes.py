@@ -1,5 +1,5 @@
 l, n = map(int, input().split())
 
-divisores = list()
-for i in range(l//2):
+soma = (n-1)+(l-n+1)**2
+print(soma)
 
