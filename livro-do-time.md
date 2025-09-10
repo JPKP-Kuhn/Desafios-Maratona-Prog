@@ -50,11 +50,12 @@ int main() {
 
   return 0;
 }
-
 ```
 
 ## Matemática
 Apenas algumas dicas:
+
+- Comparar valores double com |a - b| < EPS, sendo EPS = 1e-9
 
 - Soma de uma Progressão Aritmética: [Missing Number](https://cses.fi/problemset/task/1083/)
 ```c++
@@ -389,53 +390,6 @@ int main() {
   cout << rotations << '\n';
 
   return 0;
-}
-```
-
-### Distância Manhattan e Chebyshev
-Medir a distância entre dois pontos em uma matriz desconsiderando o movimento pela diagonal, manhattan, ou considerando a diagonal, chebyshev.
-Fórmula manhattan: `abs(x1 - x2) + abs(y1 - y2)` 
-Fórmula chebyshev: `max(abs(x2 - x1), abs(y2 - y1))` 
-
-Problema Caça Tesouro:
-A distância vai ser correta se tiver a mesma distância manhattan do que d. Brute Force em todas as posições do grid para encontrar uma com a distância d para cada pista.
-```c++
-
-int main() {
-    int n, k;
-    cin >> n >> k;
-    vector<tuple<int, int, int>> pistas(k);
-    for (int i = 0; i < k; ++i) {
-        int x, y, d;
-        cin >> x >> y >> d;
-        pistas[i] = {x, y, d};
-    }
-    int count = 0;
-    int ansX = -1, ansY = -1;
-    // Testa todas as posições possíveis do grid
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            bool ok = true;
-            for (auto &[px, py, dist] : pistas) {
-                int d = abs(i - px) + abs(j - py);
-                if (d != dist) {
-                    ok = false;
-                    break;
-                }
-            }
-            if (ok) {
-                count++;
-                ansX = i;
-                ansY = j;
-            }
-        }
-    }
-    if (count == 1) {
-        cout << ansX << " " << ansY << "\n";
-    } else {
-        cout << "-1 -1\n";
-    }
-    return 0;
 }
 ```
 
@@ -1613,7 +1567,127 @@ int main() {
   }
   return 0;
 }
+
+### Fórmula de Shoelace
+Calcular a área de um polígono com os pontos dos vértices O(n³)
+```c++
+int main()
+{
+    // Number of vertices in the polygon
+    ll n = 4;
+    // Array to store the vertices of the polygon
+    pair<ll, ll> vertices[n]
+        = { { 1, 3 }, { 5, 6 }, { 2, 5 }, { 1, 4 } };
+    // Variable to store the area of the polygon
+    ll area = 0;
+    // Calculating the area of the polygon using the
+    // shoelace formula
+    for (ll i = 0; i < n; i++) {
+        area += (vertices[i].first
+                    * vertices[(i + 1) % n].second
+                - vertices[(i + 1) % n].first
+                    * vertices[i].second);
+    }
+    // Printing the absolute value of the area
+    cout << abs(area);
+    return 0;
+}
 ```
+### Fórmula de Pick
+Para calcular a área de um polígono de forma que todos os vértices são coordenadas de números inteiros, então a área será a + b/2 - 1, com a sendo o número de pontos de coordenadas inteiras dentro do polígono e b o números de coordenadas inteiras na fronteira do polígono
+Para um polígono de 4 lados: x1 y2 − x2 y1 + x2 y3 − x3 y2 + x3 y4 − x4 y3 + x4 y1 − x1 y4
+
+Para calcular a área de um triângulo, pode se usar a fórmula: (|(a-c) * (b-c)|)/2
+Pode-se derivar essa fórmula para saber a menor distância entre um ponto e uma linha, ou seja, dois pontos que fazem parte de uma reta (s1 e s2) e um ponto p e a menor distância é d. Pode-se ter um triângulo cujos vértices são s1, s2 e p. O valor de d será d = ((s1-p) * (s2-p))/(|s2 - s1|)
+
+### Números complexos
+```c++
+typedef long long C;
+typedef complex<C> P;
+#define X real()
+#define Y imag()
+```
+Posso usar os números complexos para calcular a distância entre dois pontos
+```c++
+P a = {4,2};
+P b = {3,-1};
+cout << abs(b-a) << "\n"; // 3.16228
+```
+A função arg() calcula o ângulo de um vetor (em relação ao eixo x) e depois rotaciona ele 1/2 radianos counterclockwise.
+```c++
+P v = {4,2};
+cout << arg(v) << "\n"; // 0.463648
+v *= polar(1.0,0.5);
+cout << arg(v) << "\n"; // 0.963648
+```
+
+Para multiplicação de números complexos e saber o ângulo resultante do produto (positivo é que o vetor resultante inclina mais pra cima, 0 é que não muda e negativo é porque ele vai inclinar para baixo)
+```c++
+P a = {4,2};
+P b = {1,2};
+C p = (conj(a)*b).Y; // 6
+```
+A multiplicação é útil para saber se um ponto está a direita (então produto positivo) ou a esquerda (produto negativo) de uma linha. The cross product (p - s1) * (p-s2)
+
+### Intersecção entre segmentos de linha
+Há 3 casos para isso. Dois segmentos de reta, ab e cd (4 pontos)
+1. Os dois segmentos fazem parte da mesma linha e portanto há infinitos pontos de contato, usa cros product para saber se todos os pontos estão na mesma linha.
+2. Têm um vértice me comum, único ponto de contato. Para esse caso, considera-se que dois pontos são iguais, assim ele é o de interseção (caso fácil)
+3. Um ponto p que não é um vértice. Os pontos c e d estão em lados diferentes na linha entre a e b.
+
+### Ponto dentro de um polígono
+Podemos a partir dos pontos lançar aleatoriamente raios para várias direções desse ponto. Se cada raio tocar as fronteiras um número ímpar de vezes, então ele está dentro, se tocar um número par, então está fora.
+
+### Fórmulas para distâncias
+A fórmula usual para distância é a euclidiana, sqrt((x2-x1)² + (y2-y1)²)
+#### Distância Manhattan e Chebyshev
+Medir a distância entre dois pontos em uma matriz desconsiderando o movimento pela diagonal, manhattan, ou considerando a diagonal, chebyshev.
+Fórmula manhattan: `abs(x1 - x2) + abs(y1 - y2)` 
+Fórmula chebyshev: `max(abs(x2 - x1), abs(y2 - y1))` 
+
+Problema Caça Tesouro:
+A distância vai ser correta se tiver a mesma distância manhattan do que d. Brute Force em todas as posições do grid para encontrar uma com a distância d para cada pista.
+```c++
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+    vector<tuple<int, int, int>> pistas(k);
+    for (int i = 0; i < k; ++i) {
+        int x, y, d;
+        cin >> x >> y >> d;
+        pistas[i] = {x, y, d};
+    }
+    int count = 0;
+    int ansX = -1, ansY = -1;
+    // Testa todas as posições possíveis do grid
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            bool ok = true;
+            for (auto &[px, py, dist] : pistas) {
+                int d = abs(i - px) + abs(j - py);
+                if (d != dist) {
+                    ok = false;
+                    break;
+                }
+            }
+            if (ok) {
+                count++;
+                ansX = i;
+                ansY = j;
+            }
+        }
+    }
+    if (count == 1) {
+        cout << ansX << " " << ansY << "\n";
+    } else {
+        cout << "-1 -1\n";
+    }
+    return 0;
+}
+```
+
+
 ## Teoria de jogos Combinatórios
 ### Jogo do Nim
 ```c++
