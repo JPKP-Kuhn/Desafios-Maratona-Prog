@@ -812,7 +812,7 @@ vector<int> prefixSum2D(vector<vector<int>> &mat, vector<vector<int>> &queries) 
 }
 ```
 
-### MaxSubArraySum
+### MaxSubArraySum, Kadane
 Em uma array com números inteiros, encontrar a maior soma possível numa subarray. Por exemplo: {2, 3, -8, 7, -1, 2, 3}, terá maior soma a partir do 7 até o final, sendo 11.
 ```c++
 int maxSubarraySum(vector<int> &arr) {
