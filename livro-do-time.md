@@ -57,6 +57,76 @@ Apenas algumas dicas:
 
 - Comparar valores double com |a - b| < EPS, sendo EPS = 1e-9
 
+### Matemática Discreta e Aritmética modular
+#### Algoritmo de Euclides gcd
+```c++
+int gcd (int a, int b) {
+    if (b == 0)
+        return a;
+    else
+        return gcd (b, a % b);
+}
+```
+
+```c++
+int gcd (int a, int b) {
+    return b ? gcd (b, a % b) : a;
+}
+```
+
+```c++
+int gcd (int a, int b) {
+    while (b) {
+        a %= b;
+        swap(a, b);
+    }
+    return a;
+}
+```
+
+#### Algoritmo de Euclides Extendido
+Para descobrir a inversa multiplicativa é o valor dor x
+```c++
+int gcd(int a, int b, int& x, int& y) {
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    int x1, y1;
+    int d = gcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - y1 * (a / b);
+    return d;
+}
+```
+
+#### Teorema chinês do rest
+Para sistemas de congruência
+
+```c++
+struct Congruence {
+    long long a, m;
+};
+
+long long chinese_remainder_theorem(vector<Congruence> const& congruences) {
+    long long M = 1;
+    for (auto const& congruence : congruences) {
+        M *= congruence.m;
+    }
+
+    long long solution = 0;
+    for (auto const& congruence : congruences) {
+        long long a_i = congruence.a;
+        long long M_i = M / congruence.m;
+        long long N_i = mod_inv(M_i, congruence.m);
+        solution = (solution + a_i * M_i % M * N_i) % M;
+    }
+    return solution;
+}
+```
+
+
 - Soma de uma Progressão Aritmética: [Missing Number](https://cses.fi/problemset/task/1083/)
 ```c++
 int main() {
@@ -230,10 +300,10 @@ Ou mais simples pode ser:
 int expRapida(int base, long long exp, int mod){
   int res = 1;
   while(exp>0){
-    if(exp&1LL) 
+    if(exp&1LL)  // Se o bit atual é 1
       res = (res*1LL*base)%mod;
-    base = (base*1LL*base)%mod;
-    exp = exp>>1;
+    base = (base*1LL*base)%mod; // o quadrado da base
+    exp = exp>>1; // anda 1 bit para a direita
   }
   return res;
 }
@@ -390,6 +460,19 @@ int main() {
   cout << rotations << '\n';
 
   return 0;
+}
+```
+
+### Algoritmo de Floyd-Warshall
+Para saber o R^infinito em uma relação para fecho de transitividade
+
+```c++
+for (int k = 0; k < n; ++k) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            d[i][j] = min(d[i][j], d[i][k] + d[k][j]); 
+        }
+    }
 }
 ```
 
