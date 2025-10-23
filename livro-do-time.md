@@ -1573,6 +1573,41 @@ int main() {
 }
 ```
 
+## Spanning Tree
+Árvores geradoras de custo mínimo ou máximo, como MST.
+
+### Union Find DSU
+Conectar componentes, algoritmo bastqnte eficiente
+```c++
+struct DSU {
+    vector<int> parent, sz;
+
+    DSU(int n) {
+        parent.resize(n + 1);
+        sz.assign(n + 1, 1);
+        iota(parent.begin(), parent.end(), 0); // inicializa parent[i] = i
+    }
+
+    int find(int x) {
+        while (x != parent[x]) {
+            parent[x] = parent[parent[x]]; // path compression por salto duplo
+            x = parent[x];
+        }
+        return x;
+    }
+
+    void unite(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a == b) return;
+        if (sz[a] < sz[b]) swap(a, b);
+        parent[b] = a;
+        sz[a] += sz[b];
+    }
+};
+```
+
+
 ## Geometria
 Problemas que envolvem forams geométricas e plano cartesiano
 
