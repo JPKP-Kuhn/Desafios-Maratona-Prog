@@ -1,9 +1,5 @@
 #include <bits/stdc++.h>
-#include <cctype>
-#include <iomanip>
 using namespace std;
-using ll = long long;
-using vll = vector<ll>;
 
 string s;
 int i{};
