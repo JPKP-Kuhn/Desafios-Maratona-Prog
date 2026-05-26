@@ -6,20 +6,22 @@ using vll = vector<ll>;
 ll n;
 vll v;
 
-void merge(ll ini, ll mid, ll fim){
+void merge(ll ini, ll mid, ll fim) {
   ll n1 = mid - ini + 1;
-  ll n2 = fim-mid;
+  ll n2 = fim - mid;
 
   vll L(n1), R(n2);
 
-  for (ll i{}; i<n1; i++) L[i] = v[ini+i];
+  for (ll i{}; i < n1; i++)
+    L[i] = v[ini + i];
 
-  for (ll j{}; j<n2; j++) R[j] = v[mid+1+j];
+  for (ll j{}; j < n2; j++)
+    R[j] = v[mid + 1 + j];
 
-  ll i{}, j{}, k=ini;
+  ll i{}, j{}, k = ini;
 
-  while(i < n1 && j < n2){
-    if (L[i] <= R[j]){
+  while (i < n1 && j < n2) {
+    if (L[i] <= R[j]) {
       v[k] = L[i];
       i++;
     } else {
@@ -29,23 +31,26 @@ void merge(ll ini, ll mid, ll fim){
     k++;
   }
 
-  while(i < n1){
+  while (i < n1) {
     v[k] = L[i];
-    i++; k++;
+    i++;
+    k++;
   }
 
-  while(j < n2){
+  while (j < n2) {
     v[k] = R[j];
-    j++; k++;
+    j++;
+    k++;
   }
 }
 
 void merge_sort(ll ini, ll fim) {
-  if (ini >= fim) return;
+  if (ini >= fim)
+    return;
 
-  ll mid = ini + (fim-ini)/2;
+  ll mid = ini + (fim - ini) / 2;
   merge_sort(ini, mid);
-  merge_sort(mid+1, fim);
+  merge_sort(mid + 1, fim);
   merge(ini, mid, fim);
 }
 
@@ -54,11 +59,12 @@ int main() {
   cin.tie(NULL);
   cin >> n;
   v.resize(n);
-  for(ll &x : v) cin >> x;
-  merge_sort(0, n-1);
-  for (ll i : v) cout << i << ' ';
+  for (ll &x : v)
+    cin >> x;
+  merge_sort(0, n - 1);
+  for (ll i : v)
+    cout << i << ' ';
   cout << '\n';
 
   return 0;
 }
-

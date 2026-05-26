@@ -16,7 +16,7 @@ void merge_sort(ll ini, ll fim) {
   if (ini == fim)
     return;
 
-  ll mid = (ini + fim) / 2;
+  ll mid = (ini + fim) >> 1;
 
   merge_sort(ini, mid);
   merge_sort(mid + 1, fim);
@@ -27,12 +27,10 @@ void merge_sort(ll ini, ll fim) {
 
   while (i <= mid && j <= fim) {
     if (v[i] < v[j]) {
-      temp.push_back(v[i]);
-      i++;
+      temp.push_back(v[i++]);
     } else {
       c += (mid - i + 1);
-      temp.push_back(v[j]);
-      j++;
+      temp.push_back(v[j++]);
     }
   }
 
