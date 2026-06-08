@@ -1226,7 +1226,7 @@ int main()
 }
 ```
 
-### [Decomposição de centróide](https://usaco-guide.translate.goog/plat/centroid?_x_tr_sl=en&_x_tr_tl=pt&_x_tr_hl=pt&_x_tr_pto=tc&lang=cpp)
+### [Decomposição de centróide](https://usaco.guide/plat/centroid?lang=cpp)
 Decomposição de uma árvore para calcular seus caminhos
 ```c++
 int n;
