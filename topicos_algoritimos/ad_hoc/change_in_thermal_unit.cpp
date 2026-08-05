@@ -35,8 +35,8 @@ struct point {
   };
 };
 
-double ctof(double c) { return 9.0 / 5.0 * c + 32.0; }
-double ftoc(double f) { return (f - 32.0) * 5.0 / 9.0; }
+inline double ctof(double c) { return 9.0 / 5.0 * c + 32.0; }
+inline double ftoc(double f) { return (f - 32.0) * 5.0 / 9.0; }
 
 int main() {
   _ ll t;

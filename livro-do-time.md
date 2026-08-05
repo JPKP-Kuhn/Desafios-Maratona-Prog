@@ -1530,7 +1530,7 @@ int main()
 }
 ```
 
-Exemplo de probleam resolvido com algoritmo de Kahn:
+Exemplo de problema resolvido com algoritmo de Kahn:
 Manyfile, basicamente: tem que saber o tempo que leva para compilar um programa, sendo que tem arquivos que dependem de outros para serem compilados. Retorna -1 se é impossível, ou seja há um ciclo, arquivo 0 depende de 1 e 1 depende de 0, caso contrário retorna o tempo que levou, sendo que todos são compilados ao mesmo tempo, mas o total será aquele que depende de mais arquivos para ser compilado -
 ```c++
 ll n;
@@ -1605,7 +1605,7 @@ int main() {
 Árvores geradoras de custo mínimo ou máximo, como MST.
 
 ### Union Find DSU
-Conectar componentes, algoritmo bastqnte eficiente
+Conectar componentes, algoritmo bastante eficiente
 ```c++
 struct DSU {
     vector<int> parent, sz;
