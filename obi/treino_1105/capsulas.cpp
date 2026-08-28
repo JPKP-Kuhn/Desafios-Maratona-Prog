@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 #include <cmath>
 using namespace std;
-#define _                                                                      \
-  ios_base::sync_with_stdio(false);                                            \
-  cin.tie(NULL);                                                               \
-  cout.tie(NULL);
+#define _                                                                                          \
+    ios_base::sync_with_stdio(false);                                                              \
+    cin.tie(NULL);                                                                                 \
+    cout.tie(NULL);
 #define fr first
 #define sc second
 #define pb push_back
@@ -32,31 +32,31 @@ using vpll = vector<pair<ll, ll>>;
  */
 
 int main() {
-  _ ll n, f;
-  cin >> n >> f;
-  vll v(n);
-  for (ll &x : v)
-    cin >> x;
+    _ ll n, f;
+    cin >> n >> f;
+    vll v(n);
+    for (ll &x : v)
+        cin >> x;
 
-  // busca binária pela resposta
-  ll low = 0;
-  ll high = 1e8;
-  ll dias{};
-  while (low <= high) {
-    ll mid = (low + high) / 2;
+    // busca binária pela resposta
+    ll low = 0;
+    ll high = 1e8;
+    ll dias{};
+    while (low <= high) {
+        ll mid = (low + high) / 2;
 
-    ll moedas{};
-    for (ll m : v) {
-      moedas += mid / m;
+        ll moedas{};
+        for (ll m : v) {
+            moedas += mid / m;
+        }
+
+        if (moedas >= f) {
+            dias = mid;
+            high = mid - 1;
+        } else
+            low = mid + 1;
     }
+    cout << dias << '\n';
 
-    if (moedas >= f) {
-      dias = mid;
-      high = mid - 1;
-    } else
-      low = mid + 1;
-  }
-  cout << dias << '\n';
-
-  return 0;
+    return 0;
 }
