@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 #include <queue>
 using namespace std;
-#define _                                                                      \
-  ios_base::sync_with_stdio(false);                                            \
-  cin.tie(NULL);                                                               \
-  cout.tie(NULL);
+#define _                                                                                          \
+    ios_base::sync_with_stdio(false);                                                              \
+    cin.tie(NULL);                                                                                 \
+    cout.tie(NULL);
 #define fr first
 #define sc second
 #define pb push_back
@@ -26,53 +26,51 @@ const double EPS = 1e-9;  // Valor para comparar double
 ll ans{}, n, m;
 
 void bfs(ll x, ll y, vector<vb> &mat) {
-  vll dx = {0, 1, 0, -1};
-  vll dy = {1, 0, -1, 0};
+    vll dx = {0, 1, 0, -1};
+    vll dy = {1, 0, -1, 0};
 
-  queue<pl> q;
-  q.push({x, y});
-  mat[x][y] = false;
+    queue<pl> q;
+    q.push({x, y});
+    mat[x][y] = false;
 
-  while (!q.empty()) {
-    pl p = q.front();
-    ll i = p.fr, j = p.sc;
-    mat[i][j] = false;
-    q.pop();
+    while (!q.empty()) {
+        pl p = q.front();
+        ll i = p.fr, j = p.sc;
+        mat[i][j] = false;
+        q.pop();
 
-    for (ll d{}; d < 4; d++) {
-      ll nx = i + dx[d];
-      ll ny = j + dy[d];
+        for (ll d{}; d < 4; d++) {
+            ll nx = i + dx[d];
+            ll ny = j + dy[d];
 
-      if (nx >= 0 && nx < n && ny >= 0 && ny < m && mat[nx][ny]) {
-        mat[nx][ny] = false;
-        q.push({nx, ny});
-      }
+            if (nx >= 0 && nx < n && ny >= 0 && ny < m && mat[nx][ny]) {
+                mat[nx][ny] = false;
+                q.push({nx, ny});
+            }
+        }
     }
-  }
 }
 
 int main() {
-  _ cin >> n >> m;
-  vector<vb> mat(n, vb(m));
-  for (ll i{}; i < n; i++) {
-    string s;
-    cin >> s;
-    for (ll j{}; j < m; j++) {
-      if (s[j] == '.')
-        mat[i][j] = true;
+    _ cin >> n >> m;
+    vector<vb> mat(n, vb(m));
+    for (ll i{}; i < n; i++) {
+        string s;
+        cin >> s;
+        for (ll j{}; j < m; j++) {
+            if (s[j] == '.')
+                mat[i][j] = true;
+        }
     }
-  }
-  ll a; cin >> a;
-
-  for (ll i{}; i < n; i++) {
-    for (ll j{}; j < m; j++) {
-      if (mat[i][j]) {
-        bfs(i, j, mat);
-        ans++;
-      }
+    for (ll i{}; i < n; i++) {
+        for (ll j{}; j < m; j++) {
+            if (mat[i][j]) {
+                bfs(i, j, mat);
+                ans++;
+            }
+        }
     }
-  }
-  cout << ans << '\n';
+    cout << ans << '\n';
 
-  return 0;
+    return 0;
 }
